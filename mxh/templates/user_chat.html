@@ -1,0 +1,344 @@
+{% extends 'base.html' %}
+
+{% block title %}Chat with {{ user.username }}{% endblock %}
+
+{% block css %}
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+  }
+
+  .chat-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 700px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 125px);
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  .chat-header {
+    padding: 0.7rem;
+    background-color: #E22B2B;
+    color: #ffffff;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .message-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    list-style: none;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .message-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    position: relative;
+  }
+
+  .message-item.sent {
+    align-self: flex-end;
+    background-color: #E0F7FA;
+  }
+
+  .message-item.received {
+    align-self: flex-start;
+    background-color: #f1f1f1;
+  }
+
+  .message-sender {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #000000;
+  }
+
+  .message-text {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+    color: #000000;
+  }
+
+  .message-attachment {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .message-attachment img {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .message-attachment a {
+    color: #000000;
+    text-decoration: none;
+    text-align: left;
+  }
+
+  .message-attachment a:hover {
+    text-decoration: underline;
+  }
+
+  .message-form {
+    display: flex;
+    gap: 10px;
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+  }
+
+  .message-form textarea {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    font-size: 1rem;
+  }
+
+  .message-form input[type="file"] {
+    display: none;
+  }
+
+  .message-form label {
+    padding: 0.5rem 1rem;
+    background-color: #E22B2B;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .message-form button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #E22B2B;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .message-form button:hover {
+    background-color: #cc0000;
+  }
+
+  .message-timestamp {
+    color: black;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .file-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .file-preview-item {
+    position: relative;
+  }
+
+  #file-preview img {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    gap: 10px;
+    margin-top: -10px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+  }
+
+  #file-preview p {
+    font-size: 18px;
+    text-align: center;
+    word-wrap: break-word;
+    color: #000000;
+    margin-top: -10px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+
+  .file-preview-item button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #E22B2B;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .file-preview-item button:hover {
+    background-color: #cc0000;
+  }
+{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <div class="chat-header">
+        {{ user.first_name }} {{ user.last_name }}
+    </div>
+    <!-- Danh sách tin nhắn -->
+    <ul class="message-list">
+        {% for message in messages %}
+        <div class="message-timestamp">
+            {{ message.created_at|date:"d/m/Y H:i" }}
+        </div>
+        <li class="message-item {% if message.sender.username == request.user.username %}sent{% else %}received{% endif %}">
+            {% if message.sender.username != request.user.username %}
+            <div class="message-sender">{{ message.sender.first_name }} {{ message.sender.last_name }}</div>
+            {% endif %}
+            <div class="message-text">{{ message.text }}</div>
+            <div class="message-attachment">
+                {% for attachment in message.attachments.all %}
+                <div>
+                    {% if attachment.file_type == 'image' %}
+                    <img src="{{ attachment.file.url }}" alt="{{ attachment.file.name }}">
+                    {% else %}
+                    <a href="{{ attachment.file.url }}">{{ attachment.file.name }}</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <!-- Form gửi tin nhắn -->
+    <form method="POST" enctype="multipart/form-data" class="message-form" id="message-form">
+        {% csrf_token %}
+        <textarea name="text" id="message-text" placeholder="Nhập tin nhắn..." rows="1"></textarea>
+        <label for="file-upload">Chọn tệp</label>
+        <input type="file" id="file-upload" name="attachments" multiple>
+        <button type="submit">Gửi</button>
+    </form>
+    <!-- Xem trước tệp đã chọn -->
+    <div class="file-preview" id="file-preview"></div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('file-upload');
+    const previewContainer = document.getElementById('file-preview');
+    let selectedFiles = [];
+
+    // Xem trước tệp được tải lên
+    fileInput.addEventListener('change', function(event) {
+        previewContainer.innerHTML = '';
+        selectedFiles = Array.from(event.target.files);
+
+        selectedFiles.forEach((file, index) => {
+            const filePreviewItem = document.createElement('div');
+            filePreviewItem.className = 'file-preview-item';
+
+            if (file.type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.onload = () => URL.revokeObjectURL(img.src);
+                filePreviewItem.appendChild(img);
+            } else {
+                const p = document.createElement('p');
+                p.textContent = file.name;
+                filePreviewItem.appendChild(p);
+            }
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = '×';
+            removeButton.title = 'Xóa tệp này';
+            removeButton.addEventListener('click', function() {
+                removeFile(index);
+            });
+            filePreviewItem.appendChild(removeButton);
+
+            previewContainer.appendChild(filePreviewItem);
+        });
+    });
+
+    // Xóa tệp khỏi danh sách
+    function removeFile(index) {
+        selectedFiles.splice(index, 1);
+        updatePreview();
+    }
+
+    // Cập nhật lại danh sách tệp hiển thị
+    function updatePreview() {
+        previewContainer.innerHTML = '';
+        selectedFiles.forEach((file, index) => {
+            const filePreviewItem = document.createElement('div');
+            filePreviewItem.className = 'file-preview-item';
+
+            if (file.type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.onload = () => URL.revokeObjectURL(img.src);
+                filePreviewItem.appendChild(img);
+            } else {
+                const p = document.createElement('p');
+                p.textContent = file.name;
+                filePreviewItem.appendChild(p);
+            }
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = '×';
+            removeButton.title = 'Xóa tệp này';
+            removeButton.addEventListener('click', function() {
+                removeFile(index);
+            });
+            filePreviewItem.appendChild(removeButton);
+
+            previewContainer.appendChild(filePreviewItem);
+        });
+    }
+
+    // Gửi tin nhắn bằng phím Enter
+    const messageForm = document.getElementById('message-form');
+    const messageText = document.getElementById('message-text');
+
+    messageText.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            messageForm.submit();
+        }
+    });
+
+    // Tự động cuộn xuống cuối cùng
+    function scrollToBottom() {
+        const messageList = document.querySelector('.message-list');
+        if (messageList) {
+            messageList.scrollTop = messageList.scrollHeight;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', scrollToBottom);
+
+    messageForm.addEventListener('submit', function() {
+        setTimeout(scrollToBottom, 100);
+    });
+</script>
+{% endblock %}

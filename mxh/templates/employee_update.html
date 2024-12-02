@@ -1,0 +1,97 @@
+    {% extends 'base.html' %}
+    {% block title %}Cập nhật hồ sơ nhân viên{% endblock %}
+    {% block css %}
+        body, input, select, textarea, button {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #f1f1f1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 5px auto;
+            background-color: black;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-right: 20px;
+            width: 200px;
+            margin-bottom: 15px;
+            margin-left: 400px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 400px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-left: 30px;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        .form-actions {
+            text-align: right;
+            width: 100%;
+        }
+
+        .btn {
+            background-color: #ff0000;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #cc0000;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+    {% endblock %}
+    {% block content %}
+    <div class="container">
+        <h1 class="title">CẬP NHẬT THÔNG TIN NHÂN VIÊN</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label }} {{ field }}
+            </div>
+            {% endfor %}
+            <div class="form-actions">
+                <button type="submit" class="btn">Cập nhật</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

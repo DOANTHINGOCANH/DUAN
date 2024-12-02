@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}Tạo thông báo mới{% endblock %}
+{% block css %}
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #000;
+        color: white;
+        height: 100%;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form {
+        max-width: 1000px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 50px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    label {
+        display: block;
+        margin-bottom:5px;
+        color: #000;
+    }
+
+    .create-notification a,
+    .btn-primary {
+        color: white;
+        background-color: #000;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .create-notification a:hover,
+    .create-notification a:focus,
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: white;
+        color: #E22B2B;
+    }
+
+    textarea {
+        width: 100%;
+        height: 150px;
+        padding: 10px;
+        border: 0.5px solid #000;
+        border-radius: 3px;
+        resize: vertical;
+        color: #000;
+        font-size: 16px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Căn nút sang phải */
+        margin-top: 10px; /* Thêm khoảng cách trên nếu cần */
+    }
+    button {
+        background-color: #E22B2B;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    a {
+        color: #000;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #E22B2B;
+    }
+
+    .create-notification {
+            text-align: right;
+            margin-top: 30px;
+            margin-right: 120px;
+    }
+
+{% endblock %}
+{% block content %}
+    {% if user.is_staff %}
+        <div class="create-notification">
+            <a href="{% url 'notification_list' %}">Quay lại danh sách</a>
+        </div>
+        {% endif %}
+    <h1>Tạo thông báo mới</h1>
+ <div class="form">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="button-container">
+            <button type="submit">Tạo</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

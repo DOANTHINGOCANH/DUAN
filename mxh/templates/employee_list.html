@@ -1,0 +1,53 @@
+{% extends 'home.html' %}
+
+{% block title %}Danh sách hồ sơ nhân viên{% endblock %}
+
+{% block css %}
+    .employee-card {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+    .title {
+    margin-bottom: 10px;}
+    .employee-card h3 {
+        margin-top: 0;
+    }
+    .employee-card p {
+        margin: 5px 0;
+    }
+    a {
+        color: #ffff;
+        text-decoration: none;
+    }
+    a:hover {
+        color: red;
+    }
+{% endblock %}
+
+{% block content %}
+    <div class="title"><h1>DANH SÁCH HỒ SƠ NHÂN VIÊN</h1></div>
+    <form method="get" action="{% url 'employee_list' %}">
+        <label for="department">Bộ phận:</label>
+        <select id="department" name="department">
+            <option value="">Tất cả bộ phận</option>
+            {% for department in departments %}
+                <option value="{{ department.id }}" {% if department.id == selected_department %}selected{% endif %}>{{ department.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Tìm</button>
+    </form>
+    
+    <div>
+        {% for employee in employees %}
+            <div class="employee-card">
+                <h3><a href="{% url 'employee_detail' employee.employee_code %}">{{ employee.user.first_name }} {{ employee.user.last_name }}</a></h3>
+                <p>{{ employee.position }} - {{ employee.department }}</p>
+                <p>Mã NV: {{ employee.employee_code }}</p>
+                <p>Email: {{ employee.email }}</p>
+                <p>Số điện thoại: {{ employee.phone_number }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

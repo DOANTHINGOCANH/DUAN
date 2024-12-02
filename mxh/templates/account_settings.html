@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}THIẾT LẬP TÀI KHOẢN{% endblock %}
+{% block css %}
+    .alert-custom {
+    color: #E22B2B;
+    text-align: center;
+}
+.alert-container {
+    padding: 15px;
+}
+    .account-update {
+    background-color: white !important;
+    padding: 0px 0px 20px 0px;
+    margin: 0 auto;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    max-width: 95%;
+}
+    .account-update h2 {
+        margin-bottom: 30px;
+        background-color: #E22B2B;
+        color: white;
+        padding: 5px;
+        width: 100%;
+    }
+    .account-update .form-group {
+        margin-bottom: 25px;
+        margin-left: 50px;
+        margin-right: 50px;
+        display: flex;
+        align-items: center;
+    }
+    .text-dark {
+        color: #333 !important;
+    }
+    .account-update .form-group label {
+        margin-bottom: 0;
+        margin-right: 10px;
+        width: 120px;
+    }
+
+    .account-update .form-control {
+        border: 1px solid #ccc;
+        padding: 5px 12px;
+        flex: 1;
+        color: grey;
+    }
+
+    .buttom {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-right: 50px;
+}
+    .account-update button.btn-primary {
+        background-color: #E22B2B;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        font-size: 14px;
+        margin-top: 10px
+    }
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% if messages %}
+            <div class="alert-container">
+                {% for message in messages %}
+                <div class="alert alert-custom" role="alert">
+                    <strong><em>{{ message }}</em></strong>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        <div class="col-md-6 account-update">
+                <h2>Cập nhật thông tin tài khoản</h2>
+            <form method="post" action="{% url 'account_settings' %}">
+                {% csrf_token %}
+                <input type="hidden" name="update_profile" value="true">
+                <div class="form-group">
+                    <label for="first_name" class="text-dark"><strong>Họ:</strong></label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name" class="text-dark"><strong>Tên:</strong></label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="text-dark"><strong>Email:</strong></label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                </div>
+                <div class="buttom">
+                <button type="submit" class="btn btn-primary"><strong>Cập nhật</strong></button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-6 account-update">
+            <h2>Đổi mật khẩu</h2>
+            <form method="post" action="{% url 'account_settings' %}">
+                {% csrf_token %}
+                <input type="hidden" name="update_password" value="true">
+                <div class="form-group">
+                    <label for="old_password" class="text-dark"><strong>Mật khẩu cũ:</strong></label>
+                    <input type="password" class="form-control" id="old_password" name="old_password">
+                </div>
+                <div class="form-group">
+                    <label for="new_password" class="text-dark"><strong>Mật khẩu mới:</strong></label>
+                    <input type="password" class="form-control" id="new_password" name="new_password">
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password" class="text-dark"><strong>Xác nhận mật khẩu:</strong></label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                </div>
+                <div class="buttom">
+                    <button type="submit" class="btn btn-primary"><strong>Đổi mật khẩu</strong></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

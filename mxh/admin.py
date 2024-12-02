@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Notification, EmployeeProfile, Group, GroupMember, Message, Attachment, Post, LikePost, CommentPost, Department
+from .models import Notification, EmployeeProfile, Group, GroupMember, Message, Attachment, Post, Like, Comment, Department
 
 # Đăng ký các model với Django Admin
 
@@ -60,14 +60,14 @@ class PostAdmin(admin.ModelAdmin):
 
     comments_number.short_description = 'Comments'
 # Đăng ký model LikePost
-@admin.register(LikePost)
+@admin.register(Like)
 class LikePostAdmin(admin.ModelAdmin):
     list_display = ('user', 'post')  # Hiển thị người thích và bài viết
     search_fields = ('user__username', 'post__id')  # Tìm kiếm theo người dùng và bài viết
 
 
 # Đăng ký model CommentPost
-@admin.register(CommentPost)
+@admin.register(Comment)
 class CommentPostAdmin(admin.ModelAdmin):
     list_display = ('post', 'user', 'content', 'created_at')  # Hiển thị bài viết, người bình luận và nội dung
     search_fields = ('post__id', 'user__username', 'content')  # Tìm kiếm theo bài viết, người dùng và nội dung

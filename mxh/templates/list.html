@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% block title %}DANH SÁCH THÔNG BÁO{% endblock %}
+
+{% block css %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+        color: white;
+        height: 100%;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: white;
+        font-size: 36px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        color: white;
+    }
+
+    th {
+        background-color: #333;
+        color: white;
+    }
+
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #E22B2B;
+    }
+
+    .btn-primary {
+        color: white;
+        background-color: #000;
+        padding: 7px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: white;
+        color: #E22B2B;
+    }
+
+    .search-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .search-input {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        border-radius: 20px;
+        padding: 5px 10px;
+        width: 250px;
+    }
+
+    .search-input input {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        flex-grow: 1;
+    }
+
+    .search-icon {
+        font-size: 20px;
+        color: #E22B2B;
+        margin-right: 10px;
+    }
+
+    .notification-title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .notification-created {
+        font-size: 14px;
+        color: #888;
+        margin-top: 5px;
+    }
+
+    .success-message {
+        color: #E22B2B;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    #search-input:-webkit-autofill:hover,
+    #search-input:-webkit-autofill:focus,
+    #search-input:-webkit-autofill:active {
+        background-color: white !important; /* Màu trắng khi hover/focus */
+        -webkit-box-shadow: 0 0 0 1000px white inset !important; /* Loại bỏ xanh dương */
+        color: black !important;
+    }
+
+    .plus-icon {
+        font-size: 25px; /* Kích thước dấu cộng lớn hơn */
+        margin-right: 2px; /* Khoảng cách giữa dấu cộng và chữ */
+        font-weight: bold; /* Làm dấu cộng đậm hơn */
+        vertical-align: middle; /* Đảm bảo dấu cộng nằm ngang hàng với chữ */
+        transform: translateY(-4px); /* Dịch dấu cộng lên trên 3px */
+        display: inline-block; /* Đảm bảo dấu cộng không bị ảnh hưởng bởi các yếu tố khác */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>THÔNG BÁO</h1>
+
+    <!-- Search and Create Notification -->
+    <div class="search-bar">
+        <form action="{% url 'notification_list' %}" method="GET" class="search-input">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+            </svg>
+            <input type="text" name="search" id="search-input" placeholder="Tìm kiếm thông báo..." />
+        </form>
+
+        {% if user.is_staff %}
+        <a href="{% url 'notification_create' %}" class="btn-primary">
+            <span class="plus-icon">+</span> Tạo thông báo mới
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Success Messages -->
+    {% for mess in messages %}
+    <p class="success-message"><em>{{ mess }}</em></p>
+    {% endfor %}
+
+    <!-- Notifications Table -->
+    {% if notifications.exists %}
+    <table>
+        <tbody>
+            {% for notification in notifications %}
+            <tr>
+                <td>
+                    <div class="notification-title">
+                        <a href="{% url 'notification_detail' notification.id %}">
+                            {{ notification.title }}
+                        </a>
+                    </div>
+                    <div class="notification-created">
+                        <small>{{ notification.time_display }}</small>
+                    </div>
+                </td>
+                {% if user.is_staff %}
+                <td>
+                    <a href="{% url 'notification_update' notification.id %}" class="btn-primary">Sửa thông báo</a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+            <script>
+    document.getElementById("search-input").addEventListener("change", function () {
+        this.form.submit(); // Gửi biểu mẫu khi giá trị thay đổi
+    });
+    </script>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block title %}TÌM KIẾM{% endblock %}
+{% block css %}
+/* Tăng cường phong cách cho tiêu đề chính */
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    color: #000;
+    margin-bottom: 40px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Phong cách cho các tiêu đề phụ */
+h2 {
+    font-size: 1.8em;
+    color: #000;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 12px;
+    margin-top: 50px;
+    font-weight: 600;
+}
+
+/* Định dạng cho danh sách kết quả */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul li {
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+/* Thêm hiệu ứng hover cho các item trong danh sách */
+ul li:hover {
+    background-color: #ecf0f1;
+    transform: translateY(-8px); /* Di chuyển lên một chút */
+}
+
+/* Định dạng liên kết */
+a {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    transition: color 0.3s ease;
+    margin-top: 10px;
+}
+
+a:hover {
+    color: #c0392b;
+}
+
+/* Định dạng cho đoạn văn */
+p {
+    font-size: 1.1em;
+    color: #000;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Định dạng khi không tìm thấy kết quả */
+ul li.empty {
+    font-style: italic;
+    color: #7f8c8d;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Container tìm kiếm, giúp căn giữa nội dung và tạo hiệu ứng nổi bật */
+.search-results {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Hiển thị hình ảnh bài viết với chiều rộng phù hợp */
+ul li img {
+    width: 80px;
+    height: 80px;
+    margin-left: 15px;
+}
+
+/* Responsive Design: Điều chỉnh cho màn hình nhỏ */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.6em;
+    }
+
+    ul li {
+        padding: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search-results {
+        padding: 20px;
+    }
+
+    ul li img {
+        width: 70px;
+        height: 70px;
+        margin-top: 10px;
+    }
+}
+{% endblock %}
+{% block content %}
+<div class="search-results">
+    <h1>Kết quả tìm kiếm cho "{{ query }}"</h1>
+
+    {% if results.notifications or results.employees or results.posts %}
+        <!-- Thông báo -->
+        {% if results.notifications %}
+            <h2>Thông báo</h2>
+            <ul>
+                {% for item in results.notifications %}
+                    <li><a href="{% url 'notification_detail' item.pk %}">{{ item.title }}</a></li>
+                {% empty %}
+                    <li class="empty">Không tìm thấy thông báo nào.</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Nhân viên -->
+        {% if results.employees %}
+            <h2>Nhân viên</h2>
+            <ul>
+                {% for employee in results.employees %}
+                    <li>
+                        <a href="{% url 'employee_detail' employee.employee_code %}">
+                            {{ employee.user.first_name }} {{ employee.user.last_name }}
+                        </a>
+                    </li>
+                {% empty %}
+                    <li class="empty">Không tìm thấy nhân viên nào.</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Bài viết -->
+        {% if results.posts %}
+            <h2>Bài viết</h2>
+            <ul>
+                {% for post in results.posts %}
+                    <li>
+                        <p> {{ post.user.first_name }} {{ post.user.last_name }}</p>
+                        <p>{{ post.created_at }} </p>
+                        <a href="{% url 'post_detail' post.pk %}">
+                            {{ post.content|truncatechars:50 }}
+                        </a>
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="Post image" style="width: 100px; height: auto;">
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li class="empty">Không tìm thấy bài viết nào.</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% else %}
+        <p>Không tìm thấy kết quả nào phù hợp.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

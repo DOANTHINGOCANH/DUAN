@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTRODUCTION</title>
+    <style>
+        body {
+            font-family: Montserrat, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            padding: 45px;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+        }
+        .text-section {
+            padding: 50px;
+            flex: 1;
+            text-align: left;
+        }
+        .image-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            margin-right: 100px;
+        }
+        img {
+            width: 150%;
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+            margin-right: 20px;
+        }
+        p {
+            font-size: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 30px;
+            background-color: #e22b2b;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 20px;
+            margin-top: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .features-section {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 0px;
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .feature {
+            max-width: 200px;
+        }
+        .feature img {
+            max-width: 60%;
+            margin-bottom: 0;
+        }
+        .feature h3 {
+            font-size: 25px;
+            margin: 10px 0;
+        }
+        .feature p {
+            font-size: 15px;
+        }
+        .testimonial-section {
+            display: flex;
+            align-items: center;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(226, 43, 43, 0.3);
+        }
+        .testimonial-image {
+            max-width: 500px;
+            margin-right: 20px;
+        }
+        .testimonial-text {
+            text-align: left;
+            flex: 1;
+        }
+        .testimonial-section h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .quote {
+            font-size: 22px;
+            font-style: italic;
+            margin: 20px 0;
+        }
+        .author {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .explore-section {
+            position: relative;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .explore-section img {
+            width: 100vw;
+            height: auto;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .explore-text {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #e22b2b;
+            font-size: 17px
+
+        }
+        .explore-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 30px;
+            background-color: #e22b2b;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .explore-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-section">
+            <h1><em>MINGLE</em> - GÓI CỘNG TÁC THẾ HỆ MỚI</h1>
+            <p>Mạng xã hội nội bộ cho doanh nghiệp</p>
+            <a href="{% url 'login' %}" class="button">Bắt đầu</a>
+        </div>
+        <div class="image-section">
+            <img src="{% static 'mxh/intro.jpg' %}">
+        </div>
+    </div>
+
+    <!-- Phần giao diện mới -->
+    <div class="features-section">
+        <div class="feature">
+            <img src="{% static 'mxh/1.png' %}" alt="Tính năng 1">
+            <h3>Bài viết</h3>
+            <p>Tạo và tương tác bài viết</p>
+        </div>
+        <div class="feature">
+            <img src="{% static 'mxh/2.png' %}" alt="Tính năng 2">
+            <h3>Nhắn tin</h3>
+            <p>Trò chuyện với đồng nghiệp</p>
+        </div>
+        <div class="feature">
+            <img src="{% static 'mxh/3.png' %}" alt="Tính năng 3">
+            <h3>Thông báo</h3>
+            <p>Nhận thông báo về các lịch trình, sự kiện</p>
+        </div>
+        <div class="feature">
+            <img src="{% static 'mxh/4.png' %}" alt="Tính năng 4">
+            <h3>Hồ sơ nhân viên</h3>
+            <p>Xem hồ sơ nhân viên</p>
+        </div>
+        </div>
+    </div>
+    <!-- Phần trích dẫn -->
+    <div class="testimonial-section">
+        <img src="{% static 'mxh/team.jpg' %}" alt="Robert Liandro" class="testimonial-image">
+        <div class="testimonial-text">
+            <h2>Tiếp sức mạnh cho đội nhóm mọi nơi</h2>
+            <p class="quote">"Trước đây, chúng tôi khá đau đầu khi phải sử dụng tất cả các loại công cụ, nhưng với Mingle, nó mang lại cho chúng tôi trải nghiệm tuyệt vời, và nó khiến chúng tôi muốn tiếp tục sử dụng sản phẩm."</p>
+            <p class="author">Tran Ngoc Mai, Manager</p>
+        </div>
+    </div>
+    <!-- Giao diện khám phá -->
+    <div class="explore-section">
+        <img src="{% static 'mxh/footer.png' %}" alt="KHÁM PHÁ CÁCH CỘNG TÁC MỚI NHẤT">
+        <div class="explore-text">
+            <h2>CÙNG MINGLE KHÁM PHÁ CÁCH CỘNG TÁC MỚI NHẤT!</h2>
+            <a href="{% url 'login' %}" class="explore-button">Bắt đầu!</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,16 +1,109 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập</title>
+    <title>ĐĂNG NHẬP</title>
+    <style>
+        body {
+            font-family: April, sans-serif;
+            background: url('{% static "mxh/login.png" %}') no-repeat center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 375px;
+            height: 355px;
+            position: relative;
+            z-index: 2;
+        }
+        .login-container h2 {
+            text-align: center;
+            font-size: 50px;
+            font-weight: bold;
+            color: #E22B2B;
+            margin-bottom: 20px;
+            margin-top: 0px;
+        }
+
+        .login-container form p {
+            margin-bottom: 30px;
+            margin-top: 20px; /* Thêm đơn vị px */
+        }
+        .login-container form input {
+            width: 95%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-top: 8px;
+        }
+        .login-container form p label {
+            flex-basis: 30%;
+            text-align: right;
+            padding-right: 15px;
+            font-weight: bold;
+
+        }
+        .login-container form button {
+            width: 150px;
+            height: 45px;
+            padding: 10px;
+            background-color: #E22B2B;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0;
+            font-size: 16px;
+            font-weight: bold;
+
+        }
+        .login-container form button:hover {
+            background-color: #c02424;
+        }
+        .logo {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            z-index: 2;
+        }
+        .logo img {
+            height: 200px;
+            width: auto;
+        }
+    </style>
 </head>
 <body>
-    <h2>Đăng nhập</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Đăng nhập</button>
-    </form>
+    <div class="overlay"></div>
+    <div class="logo">
+        <img src="{% static 'mxh/logo.png' %}" />
+    </div>
+    <div class="login-container">
+        <h2>ĐĂNG NHẬP</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Đăng nhập</button>
+        </form>
+    </div>
 </body>
 </html>

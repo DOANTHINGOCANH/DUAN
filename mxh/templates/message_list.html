@@ -1,0 +1,305 @@
+{% extends 'base.html' %}
+
+{% block title %}TIN NHẮN{% endblock %}
+
+{% block css %}
+    .search_search {
+        display: flex;
+        align-items: center;
+        background-color: #101111;
+        border-radius: 20px;
+        padding: 5px 15px;
+        width: 100%;
+        max-width: 325px;
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+        margin-top: 20px;
+    }
+
+    .search_search:hover {
+        background-color: #101111;
+    }
+
+    .search-icon {
+        color: #E22B2B;
+        margin-right: 10px;
+        transition: color 0.3s ease;
+    }
+
+    .search_search:hover .search-icon {
+        color: #E22B2B;
+    }
+
+    #search-input {
+        border: none;
+        outline: none;
+        flex: 1;
+        font-size: 16px;
+        color: #fff;
+        padding: 5px 0;
+        background-color: #101111;
+    }
+
+    #search-input::placeholder {
+        color: #bbb;
+        font-style: italic;
+        background-color: #101111;
+    }
+
+    #search-input:focus::placeholder {
+        background-color: #101111;
+    }
+
+        #search-results {
+            list-style-type: none;
+            padding: 10px 0;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: transparent;
+            width: 26%;
+            z-index: 10;
+            margin-bottom:20px;
+        }
+        #search-results::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        #search-results::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        #search-results::-webkit-scrollbar-thumb {
+          background: dimgrey;
+        }
+
+        #search-results li {
+            padding: 10px;
+            border-bottom: 1px ;
+            cursor: pointer;
+            background-color: transparent;
+            border-radius: 10px;
+        }
+
+
+
+        /* Danh sách cuộc trò chuyện gần đây */
+        h2 {
+            font-size: 34px;
+            color: #fff;
+
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            width: 97%;
+        }
+
+        li a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        li a:hover {
+            color: #E22B2B;
+        }
+
+        .convo-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .convo-info span {
+            margin-right: 20px;
+        }
+
+        .convo-info .time {
+            color: #888;
+            margin-top: 10px;
+        }
+    .chat{ margin-left: 30px;
+    margin-top:10px;}
+    .mess{font-size: 16px;
+    margin-top:5px;
+    margin-bottom:-10px;}
+    #search-results li a {
+                color: white;
+            }
+    #search-results li:hover {
+                background-color: dimgrey;
+            }
+    #search-results li a:hover {
+                color: #E22B2B;
+            }
+    /* Nút tạo nhóm */
+        .create-group-button {
+            color: white;
+            padding: 8px 8px;
+            border-radius: 5px;
+            text-align: center;
+            display: block;
+            width: 120px;
+            margin: 0 auto 10px;
+            text-decoration: none;
+            margin-left: 20px;
+            background-color: #E22B2B;
+            font-size: 16px;
+        }
+
+        .create-group-button:hover {
+            background-color: #ffffff;
+            color: #E22B2B;
+        }
+
+    form {
+        width: 323px;
+    }
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        width: 800px;
+    }
+{% endblock %}
+
+{% block content %}
+
+<!-- Tìm kiếm người dùng và nhóm -->
+
+<div class="chat">
+<h2>Đoạn chat</h2>
+<div class="container">
+    <form method="get" action="{% url 'message_list' %}">
+        <div class="search_search">
+            <svg class="search-icon" width="25" height="25" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <input type="text" name="search" id="search-input" placeholder="Tìm kiếm người dùng hoặc nhóm ..." autocomplete="off">
+        </div>
+    </form>
+    <a href="{% url 'create_group' %}" id="create-group-btn" class="create-group-button">Tạo nhóm mới</a>
+</div>
+<!-- Kết quả tìm kiếm -->
+<ul id="search-results" style="display: none;">
+    <!-- Kết quả tìm kiếm sẽ hiển thị ở đây -->
+</ul>
+<ul>
+    {% for convo in conversations %}
+        {% if convo.type == 'personal' and convo.user and convo.user.id %}
+    <li>
+               <a href="{% url 'user_chat' convo.user.id %}">
+                   <strong>{{ user.first_name }} {{ user.last_name }}</strong><br>
+                   <div class="mess">
+                       <em>
+                           {% if convo.last_message %}
+                               {{ convo.sender.first_name }} {{ convo.sender.last_name }}: {{ convo.last_message }}
+                           {% else %}
+                               {{ convo.sender.first_name }} {{ convo.sender.last_name }}: Đã gửi một tệp đính kèm
+                           {% endif %}
+
+                </em><br>
+                   </div>
+                <div class="convo-info">
+                    <span class="time">{{ convo.time }}</span>
+                </div>
+            </a>
+            </li>
+        {% elif convo.type != 'personal' and convo.group and convo.group.id %}
+            <li>
+                <a href="{% url 'group_chat' convo.group.id %}">
+                    <strong>{{ convo.group.name }}</strong><br>
+                    <div class="mess">
+                        <em>
+                            {% if convo.last_message %}
+                                {{ convo.sender.first_name }} {{ convo.sender.last_name }}: {{ convo.last_message }}
+                            {% else %}
+                                {{ convo.sender.first_name }} {{ convo.sender.last_name }}: Đã gửi một tệp đính kèm
+                            {% endif %}
+                        </em><br>
+                    </div>
+                    <div class="convo-info">
+                        <span class="time">{{ convo.time }}</span>
+                    </div>
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+    // Lắng nghe sự kiện người dùng nhập vào ô tìm kiếm
+    $('#search-input').on('input', function() {
+        var query = $(this).val();
+
+        // Nếu không có gì được nhập, ẩn kết quả tìm kiếm
+        if (query.length < 1) {
+            $('#search-results').hide();
+            return;
+        }
+
+        // Gửi yêu cầu AJAX để tìm kiếm người dùng và nhóm
+        $.ajax({
+            url: '{% url "search_users_groups" %}',  // URL của view để tìm kiếm
+            data: { 'query': query },
+            dataType: 'json',
+            success: function(data) {
+                // Xóa các kết quả cũ
+                $('#search-results').empty();
+
+                // Hiển thị kết quả người dùng
+                if (data.users.length > 0) {
+                    data.users.forEach(function(user) {
+                        // Hiển thị kết quả tìm kiếm theo full name (first_name + last_name)
+                        var fullName = user.first_name + ' ' + user.last_name;
+                        $('#search-results').append(
+                            `<li><a href="/messages/user/${user.id}/">${fullName}</a></li>`
+                        );
+                    });
+                }
+
+                // Hiển thị kết quả nhóm
+                if (data.groups.length > 0) {
+                    data.groups.forEach(function(group) {
+                        $('#search-results').append(
+                            `<li><a href="/messages/group/${group.id}/">${group.name}</a></li>`
+                        );
+                    });
+                }
+
+                // Nếu không có kết quả tìm kiếm
+                if (data.users.length === 0 && data.groups.length === 0) {
+                    $('#search-results').hide();
+                } else {
+                    $('#search-results').show();
+                }
+            }
+        });
+    });
+
+    // Khi người dùng chọn một kết quả, ẩn danh sách kết quả
+    $(document).on('click', '#search-results li', function() {
+        var searchValue = $(this).text();
+        $('#search-input').val(searchValue);
+        $('#search-results').hide();
+    });
+});
+
+</script>
+
+{% endblock %}

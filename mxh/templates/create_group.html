@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+{% block title %}NHÓM MỚI{% endblock %}
+{% block css %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #FFF4F4;
+        color: #333;
+    }
+
+    .form {
+        width: 50%;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 26px;
+        color: #E22B2B;
+    }
+
+    label {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: bold;
+    }
+
+     select, textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+    }
+
+    textarea:focus, select:focus {
+        border-color: #E22B2B;
+        outline: none;
+    }
+    .form-group input{
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+    }
+    .form-group input: focus {
+    border-color: #E22B2B;
+        outline: none;
+    }
+    input[type="checkbox"] {
+        width: auto;
+        margin-right: 10px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color: #E22B2B;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+        background-color: #c92525;
+        transform: translateY(-2px);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .search-search {
+        margin-bottom: 20px;
+    }
+
+    .search-search input {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+    }
+
+    .search-search input:focus {
+        border-color: #E22B2B;
+    }
+
+    .user-list {
+        margin-top: 10px;
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #fff;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-item {
+        padding: 10px;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.3s ease;
+        color: #000;
+    }
+
+    .user-item:hover {
+        background-color: #ffe5e5;
+        cursor: pointer;
+    }
+
+    .selected-users {
+        margin-top: 20px;
+        border: 1px solid #E22B2B;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #FFE6E6;
+        margin-bottom: 10px;
+        color: #000;
+    }
+
+    .selected-users span {
+        margin-right: 10px;
+        margin-left:10px;
+        display: inline-block;
+        background-color: #E22B2B;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        margin-bottom: 5px;
+        position: relative;
+    }
+
+    .selected-users span .remove-btn {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: transparent;
+        color: #000;
+        font-size: 14px;
+        width: 20px;
+        height: 18px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: bold;
+        line-height: 18px;
+    }
+
+    .selected-users span .remove-btn:hover {
+        background-color: transparent;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>
+    {% if is_edit %}
+        SỬA NHÓM
+    {% else %}
+        NHÓM MỚI
+    {% endif %}
+</h2>
+<div class="form">
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="{{ form.name.id_for_label }}">Tên nhóm:</label>
+        {{ form.name }}
+    </div>
+
+    <!-- Tìm kiếm thành viên -->
+    <div class="search-search">
+        <label for="search-box">Tìm kiếm thành viên:</label>
+        <input type="text" id="search-box" placeholder="Nhập tên thành viên để tìm kiếm..." onkeyup="filterUsers()">
+    </div>
+
+    <!-- Danh sách thành viên -->
+<div class="form-group">
+    <label for="{{ form.members.id_for_label }}">Chọn thành viên:</label>
+    <div class="user-list" id="user-list">
+        {% for user in users %}
+            <div class="user-item" data-id="{{ user.id }}" data-first-name="{{ user.first_name }}" data-last-name="{{ user.last_name }}">
+                <input
+                    type="checkbox"
+                    name="members"
+                    value="{{ user.id }}"
+                    {% if user.id in selected_users %}checked{% endif %}
+                    onchange="updateSelectedUsers()"
+                >
+                {{ user.first_name }} {{ user.last_name }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+    <!-- Hiển thị các thành viên đã chọn -->
+<div class="selected-users" id="selected-users">
+    <strong>Thành viên đã chọn:</strong>
+    {% for user in users %}
+        {% if user.id in selected_users %}
+            <span>
+                {{ user.first_name }} {{ user.last_name }}
+                <span class="remove-btn" onclick="removeSelectedUser({{ user.id }})">X</span>
+            </span>
+        {% endif %}
+    {% endfor %}
+</div>
+
+    <button type="submit">
+    {% if is_edit %}
+        Sửa nhóm
+    {% else %}
+        Tạo nhóm
+    {% endif %}
+    </button>
+</form>
+</div>
+
+<script>
+    // Hàm lọc người dùng theo tên khi người dùng nhập vào ô tìm kiếm
+function filterUsers() {
+    const searchTerm = document.getElementById('search-box').value.toLowerCase();
+    const users = document.querySelectorAll('.user-item');
+
+    users.forEach(function(user) {
+        const firstName = user.getAttribute('data-first-name').toLowerCase();
+        const lastName = user.getAttribute('data-last-name').toLowerCase();
+
+        // Kiểm tra xem tên hoặc họ có chứa từ tìm kiếm hay không
+        if (firstName.includes(searchTerm) || lastName.includes(searchTerm)) {
+            user.style.display = 'block';
+        } else {
+            user.style.display = 'none';
+        }
+    });
+}
+
+// Hàm cập nhật danh sách người dùng đã chọn
+function updateSelectedUsers() {
+    const selectedUsersContainer = document.getElementById('selected-users');
+    const checkboxes = document.querySelectorAll('input[name="members"]:checked');
+    selectedUsersContainer.innerHTML = '<strong>Thành viên đã chọn:</strong>'; // Reset the container
+
+    checkboxes.forEach(function(checkbox) {
+        const userId = checkbox.value;
+        const firstName = checkbox.parentElement.getAttribute('data-first-name');
+        const lastName = checkbox.parentElement.getAttribute('data-last-name');
+        const fullName = firstName + ' ' + lastName;
+
+        const userSpan = document.createElement('span');
+        userSpan.textContent = fullName;
+
+        // Tạo nút "X" để xóa thành viên
+        const removeBtn = document.createElement('span');
+        removeBtn.textContent = 'X';
+        removeBtn.classList.add('remove-btn');
+        removeBtn.onclick = function() {
+            checkbox.checked = false;
+            updateSelectedUsers();
+        };
+
+        userSpan.appendChild(removeBtn);
+        selectedUsersContainer.appendChild(userSpan);
+    });
+}
+
+// Hàm xóa một thành viên đã chọn bằng ID
+function removeSelectedUser(userId) {
+    const checkbox = document.querySelector(`input[name="members"][value="${userId}"]`);
+    if (checkbox) {
+        checkbox.checked = false;
+        updateSelectedUsers();
+    }
+}
+</script>
+{% endblock %}
+

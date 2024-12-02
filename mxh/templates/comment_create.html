@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}Thêm bình luận{% endblock %}
+{% block css %}
+   /* Đặt lại cấu trúc toàn trang */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    height: 100%;
+    color: #fff; /* Màu chữ mặc định */
+}
+
+/* Container chính */
+.container {
+    max-width: 100%;
+    margin-left: 250px; /* Đẩy nội dung chính sang phải để có không gian cho sidebar */
+    padding: 20px;
+}
+
+/* Card hiển thị form */
+.card {
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 30px;
+}
+
+h2.card-title {
+    margin-bottom: 20px;
+}
+
+/* Các nút */
+.btn-primary, .btn-cancel {
+    color: white;
+    background-color: #E22B2B; /* Màu nền đỏ */
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover, .btn-cancel:hover {
+    background-color: black;
+}
+
+/* Textarea */
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    color: #000;
+    font-size: 1rem;
+}
+.content-box{
+    background-color: rgba(226, 43, 43, 1);;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 5px 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+{% endblock %}
+
+{% block content %}
+<div class="content-box">
+    <h2>Bài đăng</h2>
+    <p class="card-text">{{ post.content }}</p>
+</div>
+<div class="card">
+    <div class="card-body">
+      <h2 class="card-title">Thêm bình luận</h2>
+      <form method="post">
+        {% csrf_token %}
+        <!-- Hiển thị form với kiểu dáng mặc định -->
+        {{ form.as_p }}
+          <div class="form-actions">
+              <button type="submit" class="btn-primary">Đăng</button>
+          </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

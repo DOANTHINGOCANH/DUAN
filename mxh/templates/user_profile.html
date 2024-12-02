@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block css %}
+    .post-container {
+        max-width: 100%;
+        margin: 0 auto 20px;
+        background-color: #1c1c1c;
+        border-radius: 8px;
+        padding: 15px;
+        color: white;
+    }
+
+    .post-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+
+    .post-author {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .post-time {
+        color: #888;
+        font-size: 12px;
+        margin-top: 3px;
+    }
+
+    .post-content {
+        font-size: 16px;
+        line-height: 1.4;
+        margin-bottom: 15px;
+    }
+
+     .post-image {
+        max-width: 25%;
+        height: auto;
+        margin-bottom: 15px;
+    }
+    .delete-post-btn {
+        color: #ff4444;
+        cursor: pointer;
+    }
+{% endblock %}
+{% block content %}
+<h1>{{ profile_user.username }}</h1><br>
+<h2>Bài viết của {{ profile_user.username }}</h2><br>
+  {% for post in user_posts %}
+    <div class="post-container">
+        <div class="post-header">
+            <div>
+                <div class="post-author">
+                    {{ post.user.username }}
+                </div>
+                <div class="post-time">{{ post.created_at|timesince }} ago</div>
+            </div>
+            {% if post.user == request.user %}
+            <a href="{% url 'post_delete' post.id %}" class="delete-post-btn">
+                <i class="fas fa-trash-alt"></i>
+            </a>
+            {% endif %}
+        </div>
+
+        <div class="post-content">
+            {{ post.content }}
+        </div>
+        {% if post.image %}
+        <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
+        {% endif %}
+    </div>
+  {% endfor %}
+{% endblock %}
+

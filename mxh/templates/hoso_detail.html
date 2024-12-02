@@ -1,0 +1,119 @@
+{% extends 'home.html' %}
+
+{% block title %}Thông tin nhân viên chi tiết{% endblock %}
+
+{% block css %}
+    .employee-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .employee-details {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .employee-info {
+        flex-grow: 1;
+    }
+    .employee-info h2 {
+        margin-top: 0;
+    }
+    .employee-info p {
+        margin: 5px 0;
+    }
+    .info-section {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+    .info-section p {
+        flex-grow: 1;
+    }
+    .update-btn {
+        background-color: red;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        margin: 20px auto;
+        white-space: nowrap;
+        text-decoration: none;
+    }
+    .back-btn {
+        background-color: white;
+        color: black;
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        text-decoration: none;
+        margin-right: 50px;
+    }
+    .success-message {
+        color: red;
+        font-weight: bold;
+        margin-left: 510px;
+    }
+    .update-btn-container {
+        text-align: center;
+    }
+{% endblock %}
+
+{% block content %}
+    {% for mess in messages %}
+        <p class="success-message"><em>{{ mess }}</em></p>
+    {% endfor %}
+
+    <div class="employee-container">
+        <div class="employee-details">
+            <div class="employee-info">
+                <a href="{% url 'employee_list' %}" class="back-btn">Trở về danh sách</a>
+                <h2>{{ employee.user.first_name }} {{ employee.user.last_name }}</h2>
+                <p>{{ employee.position }} - {{ employee.department }}</p>
+                <div class="info-section">
+                    <p>Mã NV: {{ employee.employee_code }}</p>
+                </div>
+                <div class="info-section">
+                    <p>Ngày sinh: {{ employee.date_of_birth }}</p>
+                </div>
+                <div class="info-section">
+                    <p>Giới tính: {{ employee.gender }}</p>
+                </div>
+                <div class="info-section">
+                    <p>Dân tộc: {{ employee.ethnicity }}</p>
+                </div>
+                <div class="info-section">
+                    <p>Địa chỉ: {{ employee.address }}</p>
+                </div>
+                <div class="info-section">
+                    <p>Email: {{ employee.email }}</p>
+                </div>
+                <div class="info-section">
+                    <p>Số điện thoại: {{ employee.phone_number }}</p>
+                </div>
+                <div class="info-section">
+                    <p>Đơn vị công tác: {{ employee.working_unit }}</p>
+                </div>
+                <div class="info-section">
+                    <p>Bộ phận: {{ employee.department }}</p>
+                </div>
+                <div class="info-section">
+                    <p>Chức vụ: {{ employee.position }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="update-btn-container">
+    {% if request.user == employee.user or request.user.is_staff %}
+        <a href="{% url 'employee_update' employee.employee_code %}" class="update-btn">Cập nhật</a>
+    {% endif %}
+    </div>
+{% endblock %}

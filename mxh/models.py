@@ -85,30 +85,27 @@ class Attachment(models.Model):
 
 
 class Post(models.Model):
-    content = models.TextField(blank=True, null=True)  # Nội dung văn bản
+    content = models.TextField()
     image = models.ImageField(upload_to='images/', blank=True, null=True)  # Hình ảnh bài viết
-    created_at = models.DateTimeField(auto_now_add=True)  # Ngày tạo bài viết
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Người tạo bài viết
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Post by {self.user.username}  {self.created_at}"
+        return f"{self.user.username} - {self.content[:20]}..."
 
-class LikePost(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Người thích bài viết
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')  # Bài viết được thích
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['user', 'post'], name='unique_like')
-        ]
-    def __str__(self):
-        return f"{self.user.username} likes {self.post}"
-
-class CommentPost(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')  # Bài viết được bình luận
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Người bình luận
-    content = models.TextField()  # Nội dung bình luận
-    created_at = models.DateTimeField(auto_now_add=True)  # Thời gian bình luận
+class Comment(models.Model):
+    content = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Comment by {self.user.username} on {self.post}"
+        return f"{self.user.username} - {self.content[:20]}..."
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+
+    def __str__(self):
+        return f"{self.user.username} liked {self.post.content[:20]}..."

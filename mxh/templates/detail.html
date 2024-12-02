@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}Chi tiết thông báo{% endblock %}
+{% block css %}
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #000;
+        color: white;
+        height: 100%;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        width: 100%;
+        padding: 30px;
+        background-color: #000;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        flex: 1;
+    }
+
+    h1 {
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+
+    .notification-detail {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        max-height: 600px; /* Adjust this value as needed */
+        overflow-y: auto;
+    }
+
+    .notification-detail h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: #000;
+    }
+
+     .notification-detail p {
+        margin-bottom: 25px;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #000;
+        text-align: justify;
+    }
+
+    .notification-detail .created-by {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 10px;
+    }
+
+    .notification-detail .created-at {
+        font-size: 14px;
+        color: #888;
+    }
+
+    p {
+        margin-bottom: 30px;
+        font-size: 18px;
+        line-height: 1.5;
+        text-align: left;
+    }
+
+    .back-button a {
+        color: white;
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .back-button a:hover {
+        color: red;
+        background-color: white;
+        border: 1px solid white;
+    }
+
+    .back-button {
+        margin-left: 770px;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: red;
+    }
+{% endblock %}
+{% block content %}
+<div class="container">
+        <div class="back-button">
+        <a href="{% url 'notification_list' %}">Quay lại danh sách</a>
+    </div>
+    <h1>Chi tiết thông báo</h1>
+    <div class="notification-detail">
+        <h2>{{ notification.title }}</h2>
+        <p>{{ notification.content }}</p>
+        {% if user.is_staff %}
+            <div class="created-by">Người tạo: {{ notification.user.username }}</div>
+        {% endif %}
+        <div class="created-at">Thời gian tạo: {{ notification.created_at }}</div>
+    </div>
+</div>
+{% endblock %}
