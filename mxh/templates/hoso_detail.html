@@ -1,71 +1,79 @@
-{% extends 'home.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Thông tin nhân viên chi tiết{% endblock %}
 
 {% block css %}
     .employee-container {
         max-width: 800px;
-        margin: 0 auto;
+        margin: 0;
+        padding: 0;
     }
     .employee-details {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         padding: 20px;
-        border: 1px solid #ccc;
         border-radius: 5px;
     }
     .employee-info {
         flex-grow: 1;
+        color: black;
+        text-align: left;
     }
-    .employee-info h2 {
-        margin-top: 0;
+    .employee-info h1 {
+        margin-bottom: 10px;
+        color: black;
+        font-size: 26px;
     }
     .employee-info p {
         margin: 5px 0;
+        color: black;
+
     }
     .info-section {
         display: flex;
         align-items: center;
-        padding: 10px;
-        border: 1px solid #ccc;
+        padding: 8px;
+        border: 1.5px solid #ccc;
         border-radius: 3px;
+        margin-bottom: 7px;
+        background-color: #ffefef;
     }
     .info-section p {
         flex-grow: 1;
+        font-size: 16px;
+    }
+    .btn-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
+    .update-btn, .back-btn {
+        margin: 0 10px;
     }
     .update-btn {
-        background-color: red;
+        background-color: #d42828;
         color: white;
-        padding: 8px 12px;
-        border: none;
+        padding: 10px 25px;
         border-radius: 4px;
-        cursor: pointer;
-        display: inline-block;
-        margin: 20px auto;
         white-space: nowrap;
+        cursor: pointer;
         text-decoration: none;
     }
     .back-btn {
         background-color: white;
         color: black;
-        padding: 8px 12px;
-        border: 1px solid #ccc;
+        padding: 12px 12px;
         border-radius: 4px;
         cursor: pointer;
-        display: inline-block;
         text-decoration: none;
-        margin-right: 50px;
     }
     .success-message {
-        color: red;
+        color: #d42828;
         font-weight: bold;
-        margin-left: 510px;
-    }
-    .update-btn-container {
-        text-align: center;
+        text-align: left;
+        padding: 20px;
     }
 {% endblock %}
-
 {% block content %}
     {% for mess in messages %}
         <p class="success-message"><em>{{ mess }}</em></p>
@@ -74,9 +82,7 @@
     <div class="employee-container">
         <div class="employee-details">
             <div class="employee-info">
-                <a href="{% url 'employee_list' %}" class="back-btn">Trở về danh sách</a>
-                <h2>{{ employee.user.first_name }} {{ employee.user.last_name }}</h2>
-                <p>{{ employee.position }} - {{ employee.department }}</p>
+                <h1>{{employee.position}}: {{ employee.user.first_name }} {{ employee.user.last_name }}</h1>
                 <div class="info-section">
                     <p>Mã NV: {{ employee.employee_code }}</p>
                 </div>
@@ -111,9 +117,10 @@
         </div>
     </div>
 
-    <div class="update-btn-container">
-    {% if request.user == employee.user or request.user.is_staff %}
-        <a href="{% url 'employee_update' employee.employee_code %}" class="update-btn">Cập nhật</a>
-    {% endif %}
+    <div class="btn-container">
+        <a href="{% url 'employee_list' %}" class="back-btn">Trở về danh sách</a>
+        {% if request.user == employee.user or request.user.is_staff %}
+            <a href="{% url 'employee_update' employee.employee_code %}" class="update-btn">Cập nhật</a>
+        {% endif %}
     </div>
 {% endblock %}

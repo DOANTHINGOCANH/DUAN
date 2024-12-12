@@ -12,26 +12,29 @@
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 80%;
+    width: 70%;
     max-width: 700px;
     margin: 20px auto;
     display: flex;
     flex-direction: column;
     height: calc(100vh - 125px);
     overflow: hidden;
-    margin-top: 10px;
+    margin-top: 30px;
   }
 
-  .chat-header {
+
+
+.chat-header {
     padding: 0.7rem;
-    background-color: #E22B2B;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #000000;
     text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1.2rem;
     border-radius: 8px 8px 0 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
     position: relative;
-  }
+}
 
   .message-list {
     flex: 1;
@@ -48,7 +51,7 @@
     flex-direction: column;
     margin-bottom: 1rem;
     padding: 0.5rem;
-    border-radius: 5px;
+    border-radius: 10px;
     position: relative;
  }
 
@@ -120,7 +123,7 @@
 
   .message-form label {
     padding: 0.5rem 1rem;
-    background-color: #E22B2B;
+    background-color: #d42828;
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
@@ -130,7 +133,7 @@
   .message-form button {
     padding: 0.5rem 1rem;
     border: none;
-    background-color: #E22B2B;
+    background-color: #d42828;
     color: white;
     font-size: 1rem;
     cursor: pointer;
@@ -138,13 +141,11 @@
   }
 
   .message-form button:hover {
-    background-color: #cc0000;
+    color: #cc0000;
   }
-    .message-timestamp{ color: black;
+    .message-timestamp{ color: #888;
     font-size: 0.8rem;
     display: flex;
-    justify-content: center;
-    align-items: center;
     margin-bottom: 10px;
     }
   .file-preview {
@@ -183,7 +184,7 @@
     position: absolute;
     top: 5px;
     right: 5px;
-    background-color: #E22B2B;
+    background-color: #d42828;
     color: white;
     border: none;
     border-radius: 50%;
@@ -204,19 +205,17 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+
 }
 
-.edit-group-button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-}
 .edit-group-button svg {
-    fill: #ffffff;
+    fill: #666;
     width: 24px;
     height: 24px;
     transition: fill 0.3s ease, transform 0.2s ease;
 
-.edit-group-button:hover svg {
-    fill: #000000;
+.edit-group-button svg:hover{
+    fill: #d42828;
 }
 {% endblock %}
 {% block content %}
@@ -241,9 +240,7 @@
     <!-- Danh sách tin nhắn -->
     <ul class="message-list">
         {% for message in messages %}
-        <div class="message-timestamp">
-                {{ message.created_at|date:"d/m/Y H:i" }}
-        </div>
+
         <li class="message-item {% if message.sender.username == user.username %}sent{% else %}received{% endif %}">
             {% if message.sender.username != user.username %}
             <div class="message-sender">{{ message.sender.first_name }} {{ message.sender.last_name }}</div>
@@ -260,6 +257,9 @@
                 </div>
                 {% endfor %}
             </div>
+            <div class="message-timestamp">
+                {{ message.time_display}}
+        </div>
         </li>
         {% endfor %}
     </ul>

@@ -2,10 +2,10 @@
 {% block title %}Sửa thông báo{% endblock %}
 {% block css %}
     body, html {
-        font-family: Arial, sans-serif;
+        font-family: Montserrat, sans-serif;
         margin: 0;
         padding: 20px;
-        background-color: #000;
+        background-color: #ffefef;
         color: white;
         height: 100%;
     }
@@ -13,6 +13,8 @@
     h1 {
         text-align: center;
         margin-bottom: 20px;
+        color: black;
+        font-size: 26px;
     }
 
     .form {
@@ -20,8 +22,10 @@
         margin: 0 auto;
         background-color: #fff;
         padding: 50px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+        border: 1px solid #ccc;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
         display: flex;
         flex-direction: column;
         margin-top: 10px;
@@ -31,7 +35,7 @@
     label {
         display: block;
         margin-bottom:5px;
-        color: #000; /* Chuyển màu chữ của label thành đen */
+        color: #000;
     }
 
     textarea {
@@ -41,7 +45,7 @@
         border: 0.5px solid #000;
         border-radius: 3px;
         resize: vertical;
-        color: #000; /* Chuyển màu chữ của textarea thành đen */
+        color: #000;
     }
 
     .container {
@@ -51,11 +55,11 @@
 
     .button-container {
         display: flex;
-        justify-content: flex-end; /* Căn nút sang phải */
-        margin-top: 10px; /* Thêm khoảng cách trên nếu cần */
+        justify-content: flex-end;
+        margin-top: 10px;
     }
     button {
-        background-color: #E22B2B;
+        background-color: #d42828;
         color: white;
         padding: 10px 20px;
         border: none;
@@ -63,14 +67,6 @@
         cursor: pointer;
     }
 
-    a {
-        color: #000;
-        text-decoration: none;
-    }
-
-    a:hover {
-        color: #E22B2B;
-    }
 
     .create-notification {
             text-align: right;

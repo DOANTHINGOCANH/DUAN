@@ -2,195 +2,197 @@
 {% block title %}BÀI VIẾT{% endblock %}
 {% load tz %}
 {% block css %}
-    .container {
-        margin-top: 70px; /* Đảm bảo khoảng cách nút và bài viết */
-    }
-    .post-container {
-        max-width: 100%;
-        margin: 0 auto 20px;
-        background-color: #1c1c1c;
-        border-radius: 8px;
-        padding: 15px;
-        color: white;
-    }
-
-
-    .post-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 15px;
-    }
-
-
-    .post-author {
-        font-weight: bold;
-        font-size: 20px;
-    }
-
-    .post-author a {
-        text-decoration: none;
-        color: white;}
-
-    .post-time {
-        color: #888;
-        font-size: 12px;
-        margin-top: 3px;
-    }
-
-    .post-content {
-        font-size: 16px;
-        line-height: 1.4;
-        margin-bottom: 15px;
-    }
-
-     .post-image {
-        max-width: 25%;
-        height: auto;
-        margin-bottom: 15px;
-    }
-    .liked {
-        background-color: #ff4444; /* Màu đỏ khi bài viết đã được like */
-    }
-    .post-actions {
-        display: flex;
-        justify-content: flex-start; /* Canh trái */
-        gap: 20px; /* Khoảng cách giữa các nút */
-        padding-top: 10px; /* Tạo khoảng cách giữa nội dung và các nút */
+  .container {
+      margin-top: 70px;
+  }
+  .post-container {
+    max-width: 85%;
+    margin: 0 auto 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    color: #333;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    border: 1px solid #ccc;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-    .action-button {
-        display: inline-flex; /* Hiển thị ngang */
-        align-items: center;
-        padding: 8px 15px; /* Tạo không gian bên trong nút */
-        font-size: 16px; /* Kích thước chữ */
-        font-weight: bold; /* In đậm chữ */
-        color: #fff; /* Màu chữ trắng */
-        background-color: #333; /* Màu nền */
-        border-radius: 25px; /* Góc bo tròn */
-        cursor: pointer;
-        text-decoration: none; /* Bỏ gạch chân khi là link */
-        transition: background-color 0.3s, color 0.3s; /* Hiệu ứng hover */
-    }
+  .post-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
 
-    .action-button i {
-        margin-right: 8px; /* Khoảng cách giữa biểu tượng và chữ */
-        font-size: 18px; /* Kích thước biểu tượng */
-    }
 
-    .action-button:hover {
-        background-color: #E22B2B; /* Màu nền khi hover */
-        color: #fff; /* Màu chữ khi hover */
-    }
+  }
 
-    .action-button:active {
-        transform: scale(0.95); /* Hiệu ứng thu nhỏ khi click */
-    }
-
-    .action-button a {
-        color: inherit; /* Giữ nguyên màu chữ */
-        text-decoration: none; /* Bỏ gạch chân */
-    }
-
-    .comments-section {
-        margin-top: 15px;
-        border-top: 1px solid #333;
-        padding-top: 15px;
-    }
-
-    .comment {
-        display: flex;
-        align-items: flex-start;
-        position: relative;
-        margin: 0 auto;
-    }
-
-    .comment-content {
-        background-color: #2c2c2c;
-        padding: 8px 12px;
-        border-radius: 18px;
-        flex-grow: 1;
-        position: relative;
-        margin-bottom:20px;
-    }
-
-    .comment-author {
-        font-weight: bold;
-        font-size: 13px;
-        margin-bottom: 4px;
-    }
-
-    .comment-text {
-        font-size: 14px;
-    }
-
-    .comment-time {
-        color: #888;
-        font-size: 11px;
-        margin-top: 4px;
-    }
-
-    .delete-cmt-btn {
-        position: absolute; /* Đặt icon thùng rác lên góc */
-        top: 10px;
-        right: 10px;
-        color: #ff4444;
-        cursor: pointer;
-        z-index: 2; /* Đảm bảo icon hiển thị trên nội dung */
-    }
-
-    .create-post-button-container {
-        text-align: right;
-        margin: 5px 0; /* Tạo khoảng cách giữa nút và header */
-        position: fixed;
-        right: 20px;
-        z-index: 10;
-    }
-    .btn-create {
-      background-color: #E22B2B; /* Màu nền đỏ */
-      color: white; /* Màu chữ trắng */
-      padding: 10px 20px;
-      font-size: 16px;
+  .post-author {
       font-weight: bold;
-      text-decoration: none;
-      border-radius: 8px;
-      display: inline-block;
-      transition: background-color 0.1s;
-    }
-    .btn-create:hover {
-      background-color: #000;
-    }
-    .edit-delete-btn {
-        display: inline-flex; /* Hiển thị ngang */
-        gap: 10px; /* Khoảng cách giữa các nút */
-        align-items: center; /* Căn giữa theo chiều dọc */
-        cursor: pointer;
-        z-index: 2; /* Đảm bảo các nút nằm trên nội dung khác */
-    }
+      font-size: 20px;
+  }
 
-    .edit-delete-btn a {
-        display: inline-flex; /* Hiển thị ngang */
-        align-items: center; /* Căn giữa icon */
-        justify-content: center; /* Đặt icon vào giữa */
-        padding: 8px; /* Tạo không gian quanh icon */
-        border-radius: 50%; /* Bo tròn nút để giống hình tròn */
-        background-color: #333; /* Màu nền */
-        color: #fff; /* Màu biểu tượng */
-        font-size: 16px; /* Kích thước biểu tượng */
-        transition: background-color 0.3s, transform 0.2s; /* Hiệu ứng hover */
-        width: 40px; /* Kích thước nút (chiều rộng và cao) */
-        height: 40px;
-        text-decoration: none;
+  .post-author a {
+      text-decoration: none;
+      color: black;
+      font-size: 16px;}
+
+  .post-time {
+      color: #888;
+      font-size: 12px;
+      margin-top: 3px;
+  }
+
+  .post-content {
+      font-size: 16px;
+      line-height: 1.4;
+      margin-bottom: 15px;
+  }
+  .post-content a {
+      text-decoration: none;
+      color: black;
 }
 
-    .edit-delete-btn a:hover {
-        background-color: #ff4444; /* Màu nền khi hover */
-        transform: scale(1.1); /* Tăng kích thước khi hover */
-    }
+   .post-image {
+      max-width: 25%;
+      height: auto;
+      margin-bottom: 15px;
+  }
 
-    .edit-delete-btn a i {
-        font-size: 18px; /* Kích thước icon */
-    }
+  .liked {
+      background-color: #ff4444;
+  }
+
+  .post-actions {
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 15px;
+      margin-top: 15px;
+  }
+
+  .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+  }
+  .post-actions a {
+      text-decoration: none;
+  }
+  .comments-section {
+      margin-top: 15px;
+      border-top: 1px solid #333;
+      padding-top: 15px;
+  }
+
+  .comment {
+      display: flex;
+      align-items: flex-start;
+      position: relative;
+      margin: 0 auto;
+  }
+
+  .comment-content {
+      background-color: #2c2c2c;
+      padding: 8px 12px;
+      border-radius: 18px;
+      flex-grow: 1;
+      position: relative;
+      margin-bottom:20px;
+  }
+
+  .comment-author {
+      font-weight: bold;
+      font-size: 13px;
+      margin-bottom: 4px;
+  }
+
+  .comment-text {
+      font-size: 14px;
+  }
+
+  .comment-time {
+      color: #888;
+      font-size: 11px;
+      margin-top: 4px;
+  }
+
+  .delete-cmt-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #ff4444;
+      cursor: pointer;
+      z-index: 2;
+  }
+
+  .create-post-button-container {
+      text-align: right;
+      margin: 5px 0;
+      position: fixed;
+      right: 20px;
+      z-index: 10;
+  }
+  .btn-create {
+    background-color: #d42828;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    display: inline-block;
+    transition: background-color 0.1s;
+  }
+  .btn-create:hover {
+    background-color: #000;
+  }
+  .edit-delete-btn {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      z-index: 2;
+  }
+
+  .edit-delete-btn a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      border-radius: 50%;
+      color: #666;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+      width: 40px;
+      height: 40px;
+      text-decoration: none;
+}
+
+  .edit-delete-btn a:hover {
+      color: #d42828;
+      transform: scale(1.1);
+  }
+
+
+
+
+  .edit-delete-btn a i {
+      font-size: 18px;
+  }
+  .liked {
+      color: #3498db;
+  }
+  .like-count {
+      margin: -8px;
+  }
+  .action-btn:hover {
+      color: #3498db;
+  }
+
 {% endblock %}
 
 {% block content %}
@@ -221,69 +223,54 @@
             </a>
             {% endif %}
             </div>
-
         </div>
-
         <div class="post-content">
-            {{ post.content }}
+             <a href="{% url 'post_detail' post.pk %}" >{{ post.content }}</a>
         </div>
         {% if post.image %}
         <a href="{% url 'post_detail' post.pk %}" ><img src="{{ post.image.url }}" alt="Post Image" class="post-image"></a>
         {% endif %}
         <div class="post-actions">
-            <div class="action-button {% if post.is_liked %}liked{% endif %}" data-post-id="{{ post.pk }}">
-                <a href="{% url 'like' post.pk %}">
-                    <i class="far fa-thumbs-up"></i>
-                    Like ({{ post.likes.count }})
-                </a>
-            </div>
-            <div class="action-button">
-              <a href="{% url 'comment_create' post.pk %}">
-                <i class="far fa-comment"></i>
-                Comment
-              </a>
-            </div>
+            <button class="action-btn like-btn like-count" data-post-id="{{ post.id }}">
+                <i class="far fa-thumbs-up"></i> Thích (<span class="like-count">{{ post.likes.count }}</span>)
+            </button>
+            <a href="{% url 'post_detail' post.pk %}"><button class="action-btn comment-btn">
+                <i class="far fa-comment"></i> Bình luận ({{ post.comments.count }})
+            </button></a>
         </div>
-        {% if post.comments.exists %}
-        <div class="comments-section">
-            {% for comment in post.comments.all %}
-            <div class="comment">
-                {% if comment.user == request.user %}
-                <a href="{% url 'comment_delete' comment.id %}" class="delete-cmt-btn">
-                    <i class="fas fa-trash-alt"></i>
-                </a>
-                {% endif %}
-                <div class="comment-content">
-                    <div class="comment-author">{{ comment.user.first_name }} {{ comment.user.last_name }}</div>
-                    <div class="comment-text">{{ comment.content }}</div>
-                    <div class="comment-time">{{ comment.created_at|timesince }} ago
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
+
     </div>
     {% endfor %}
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // Khôi phục vị trí cuộn nếu có trong localStorage
-    const scrollPosition = localStorage.getItem("scrollPosition");
-    if (scrollPosition) {
-      window.scrollTo(0, parseInt(scrollPosition, 10)); // Cuộn đến vị trí đã lưu
-      localStorage.removeItem("scrollPosition"); // Xóa sau khi sử dụng
-    }
+    const likeButtons = document.querySelectorAll(".like-btn");
 
-    // Gắn sự kiện click để lưu vị trí cuộn trước khi tải lại trang
-    const actionLinks = document.querySelectorAll(".action-button a");
-    actionLinks.forEach((link) => {
-      link.addEventListener("click", function () {
-        // Lưu vị trí cuộn hiện tại vào localStorage
-        localStorage.setItem("scrollPosition", window.scrollY);
+    likeButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const postId = this.getAttribute("data-post-id");
+        const likeCountElement = this.querySelector(".like-count");
+
+        fetch("{% url 'like_post' %}", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `post_id=${postId}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.liked) {
+              this.classList.add("liked");
+            } else {
+              this.classList.remove("liked");
+            }
+            likeCountElement.textContent = data.like_count;
+          })
+          .catch((error) => console.error("Error:", error));
       });
     });
   });
 </script>
-
 {% endblock %}

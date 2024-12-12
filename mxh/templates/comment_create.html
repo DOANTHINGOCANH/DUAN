@@ -1,24 +1,23 @@
 {% extends 'base.html' %}
 {% block title %}Thêm bình luận{% endblock %}
 {% block css %}
-   /* Đặt lại cấu trúc toàn trang */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #000;
     height: 100%;
-    color: #fff; /* Màu chữ mặc định */
+    color: #fff;
 }
 
-/* Container chính */
+
 .container {
     max-width: 100%;
-    margin-left: 250px; /* Đẩy nội dung chính sang phải để có không gian cho sidebar */
+    margin-left: 250px;
     padding: 20px;
 }
 
-/* Card hiển thị form */
+
 .card {
     background-color: #fff;
     color: #000;
@@ -34,10 +33,9 @@ h2.card-title {
     margin-bottom: 20px;
 }
 
-/* Các nút */
 .btn-primary, .btn-cancel {
     color: white;
-    background-color: #E22B2B; /* Màu nền đỏ */
+    background-color: #d42828;
     padding: 10px 15px;
     border-radius: 5px;
     text-decoration: none;
@@ -50,7 +48,6 @@ h2.card-title {
     background-color: black;
 }
 
-/* Textarea */
 textarea {
     width: 100%;
     height: 150px;
@@ -71,7 +68,6 @@ textarea {
     margin-bottom: 20px;
 }
 {% endblock %}
-
 {% block content %}
 <div class="content-box">
     <h2>Bài đăng</h2>
@@ -82,7 +78,6 @@ textarea {
       <h2 class="card-title">Thêm bình luận</h2>
       <form method="post">
         {% csrf_token %}
-        <!-- Hiển thị form với kiểu dáng mặc định -->
         {{ form.as_p }}
           <div class="form-actions">
               <button type="submit" class="btn-primary">Đăng</button>

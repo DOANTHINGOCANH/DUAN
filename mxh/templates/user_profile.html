@@ -1,75 +1,223 @@
 {% extends 'base.html' %}
+{% block title %}Bài viết của {{ profile_user.first_name }} {{profile_user.last_name}}{% endblock %}
+{% load tz %}
 {% block css %}
-    .post-container {
-        max-width: 100%;
-        margin: 0 auto 20px;
-        background-color: #1c1c1c;
-        border-radius: 8px;
-        padding: 15px;
-        color: white;
-    }
+        .post-container {
+            max-width: 85%;
+            margin: 0 auto 20px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            color: #333;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            border: 1px solid #ccc;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
 
-    .post-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 15px;
-    }
+        h2 {
+            color: black;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 16px;
+            font-style: italic;
+            font-weight: normal;
+            margin-top: 20px;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: black;
+        }
 
+        .post-author {
+            font-weight: bold;
+            font-size: 18px;
+            color: black;
+        }
 
-    .post-author {
-        font-weight: bold;
-        font-size: 20px;
-    }
+        .post-author a {
+            text-decoration: none;
+            color: black;
+            font-size: 16px;
+        }
 
-    .post-time {
-        color: #888;
-        font-size: 12px;
-        margin-top: 3px;
-    }
+        .post-time {
+            color: #888;
+            font-size: 12px;
+            margin-top: 3px;
+        }
 
-    .post-content {
-        font-size: 16px;
-        line-height: 1.4;
-        margin-bottom: 15px;
-    }
+        .post-content {
+            font-size: 16px;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            color: black;
+        }
+        .post-content a {
+            text-decoration: none;
+            color: black;
+        }
+        .post-image {
+            max-width: 25%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
 
-     .post-image {
-        max-width: 25%;
-        height: auto;
-        margin-bottom: 15px;
-    }
-    .delete-post-btn {
-        color: #ff4444;
-        cursor: pointer;
-    }
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .post-actions a {
+            text-decoration: none;
+        }
+
+        .create-post-button-container {
+            text-align: right;
+            margin: 5px 0;
+            position: fixed;
+            right: 20px;
+            z-index: 10;
+        }
+        .btn-create {
+            background-color: #d42828;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            transition: background-color 0.1s;
+        }
+        .btn-create:hover {
+            background-color: #000;
+        }
+        .edit-delete-btn {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .edit-delete-btn a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 50%;
+            color: #666;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 40px;
+            height: 40px;
+            text-decoration: none;
+        }
+
+        .edit-delete-btn a:hover {
+            color: #d42828;
+            transform: scale(1.1);
+        }
+        .edit-delete-btn a i {
+            font-size: 18px;
+        }
+        .liked {
+            color: #3498db;
+        }
+        .like-count {
+            margin: -8px;
+        }
+        .action-btn:hover {
+            color: #3498db;
+        }
 {% endblock %}
+
 {% block content %}
-<h1>{{ profile_user.username }}</h1><br>
-<h2>Bài viết của {{ profile_user.username }}</h2><br>
+<h2>Danh sách bài viết của {{ profile_user.first_name }} {{profile_user.last_name}}</h2><br>
   {% for post in user_posts %}
     <div class="post-container">
         <div class="post-header">
             <div>
                 <div class="post-author">
-                    {{ post.user.username }}
+                    <a href="{% url 'user_profile' post.user.username %}">{{ post.user.first_name }} {{ post.user.last_name }}</a>
                 </div>
-                <div class="post-time">{{ post.created_at|timesince }} ago</div>
+                <div class="post-time">{{ post.time_display }}</div>
             </div>
+            <div class="edit-delete-btn">
             {% if post.user == request.user %}
-            <a href="{% url 'post_delete' post.id %}" class="delete-post-btn">
+            <a href="{% url 'post_delete' post.id %}">
                 <i class="fas fa-trash-alt"></i>
             </a>
             {% endif %}
+            {% if post.user == request.user %}
+            <a href="{% url 'post_edit' post.pk %}">
+                <i class="fas fa-edit"></i>
+            </a>
+            {% endif %}
+            </div>
         </div>
-
         <div class="post-content">
-            {{ post.content }}
+             <a href="{% url 'post_detail' post.pk %}" >{{ post.content }}</a>
         </div>
         {% if post.image %}
-        <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
+        <a href="{% url 'post_detail' post.pk %}" ><img src="{{ post.image.url }}" alt="Post Image" class="post-image"></a>
         {% endif %}
+        <div class="post-actions">
+            <button class="action-btn like-btn like-count" data-post-id="{{ post.id }}">
+                <i class="far fa-thumbs-up"></i> Thích (<span class="like-count">{{ post.likes.count }}</span>)
+            </button>
+            <a href="{% url 'post_detail' post.pk %}"><button class="action-btn comment-btn">
+                <i class="far fa-comment"></i> Bình luận ({{ post.comments.count }})
+            </button></a>
+        </div>
+
     </div>
-  {% endfor %}
+    {% endfor %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const likeButtons = document.querySelectorAll(".like-btn");
+
+    likeButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const postId = this.getAttribute("data-post-id");
+        const likeCountElement = this.querySelector(".like-count");
+
+        fetch("{% url 'like_post' %}", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `post_id=${postId}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.liked) {
+              this.classList.add("liked");
+            } else {
+              this.classList.remove("liked");
+            }
+            likeCountElement.textContent = data.like_count;
+          })
+          .catch((error) => console.error("Error:", error));
+      });
+    });
+  });
+</script>
 {% endblock %}
 

@@ -1,33 +1,52 @@
-{% extends 'base.html' %}
+ {% extends 'base.html' %}
 {% block title %}TÌM KIẾM{% endblock %}
 {% block css %}
 /* Tăng cường phong cách cho tiêu đề chính */
-h1 {
-    font-size: 2.5em;
+/* Tiêu đề chính */
+.search-results {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.search-results h1 {
+    font-size: 30px;
     text-align: center;
     color: #000;
     margin-bottom: 40px;
     font-weight: 700;
     letter-spacing: 1px;
+    font-size: 30px;
 }
 
-/* Phong cách cho các tiêu đề phụ */
-h2 {
-    font-size: 1.8em;
+/* Tiêu đề phụ */
+.search-results h2 {
+    font-size: 20px;
     color: #000;
     border-bottom: 2px solid #ecf0f1;
     padding-bottom: 12px;
     margin-top: 50px;
     font-weight: 600;
+    font-size: 25px;
 }
+.none {
+    color: #d42828;
+ }
 
-/* Định dạng cho danh sách kết quả */
-ul {
+/* Danh sách chung */
+ul.notifications-list,
+ul.employees-list,
+ul.posts-list {
     list-style-type: none;
     padding-left: 0;
 }
 
-ul li {
+/* Item trong danh sách */
+.notification-item,
+.employee-item,
+.post-item {
     padding: 20px;
     background-color: #ffffff;
     border: 1px solid #ddd;
@@ -39,15 +58,18 @@ ul li {
     align-items: center;
 }
 
-/* Thêm hiệu ứng hover cho các item trong danh sách */
-ul li:hover {
+.notification-item:hover,
+.employee-item:hover,
+.post-item:hover {
     background-color: #ecf0f1;
-    transform: translateY(-8px); /* Di chuyển lên một chút */
+    transform: translateY(-8px);
 }
 
-/* Định dạng liên kết */
-a {
-    color: #e74c3c;
+/* Liên kết */
+.notification-link,
+.employee-link,
+.post-link {
+    color: #d42828;
     text-decoration: none;
     font-weight: bold;
     display: block;
@@ -55,64 +77,46 @@ a {
     margin-top: 10px;
 }
 
-a:hover {
+.notification-link:hover,
+.employee-link:hover,
+.post-link:hover {
     color: #c0392b;
 }
 
-/* Định dạng cho đoạn văn */
-p {
+/* Hình ảnh bài viết */
+.post-image {
+    width: 80px;
+    height: 80px;
+    margin-left: 15px;
+}
+
+/* Đoạn văn */
+.post-author {
     font-size: 1.1em;
     color: #000;
     text-align: center;
     margin-top: 10px;
 }
 
-/* Định dạng khi không tìm thấy kết quả */
-ul li.empty {
-    font-style: italic;
-    color: #7f8c8d;
-    text-align: center;
-    padding: 20px 0;
-}
-
-/* Container tìm kiếm, giúp căn giữa nội dung và tạo hiệu ứng nổi bật */
-.search-results {
-    max-width: 1200px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Hiển thị hình ảnh bài viết với chiều rộng phù hợp */
-ul li img {
-    width: 80px;
-    height: 80px;
-    margin-left: 15px;
-}
-
-/* Responsive Design: Điều chỉnh cho màn hình nhỏ */
+/* Responsive */
 @media (max-width: 768px) {
-    h1 {
+    .search-results h1 {
         font-size: 2em;
     }
 
-    h2 {
+    .search-results h2 {
         font-size: 1.6em;
     }
 
-    ul li {
+    .notification-item,
+    .employee-item,
+    .post-item {
         padding: 15px;
         flex-direction: column;
         align-items: flex-start;
     }
 
-    .search-results {
-        padding: 20px;
-    }
-
-    ul li img {
+    .post-image {
         width: 70px;
         height: 70px;
         margin-top: 10px;
@@ -127,9 +131,11 @@ ul li img {
         <!-- Thông báo -->
         {% if results.notifications %}
             <h2>Thông báo</h2>
-            <ul>
+            <ul class="notifications-list">
                 {% for item in results.notifications %}
-                    <li><a href="{% url 'notification_detail' item.pk %}">{{ item.title }}</a></li>
+                    <li class="notification-item">
+                        <a class="notification-link" href="{% url 'notification_detail' item.pk %}">{{ item.title }}</a>
+                    </li>
                 {% empty %}
                     <li class="empty">Không tìm thấy thông báo nào.</li>
                 {% endfor %}
@@ -139,10 +145,10 @@ ul li img {
         <!-- Nhân viên -->
         {% if results.employees %}
             <h2>Nhân viên</h2>
-            <ul>
+            <ul class="employees-list">
                 {% for employee in results.employees %}
-                    <li>
-                        <a href="{% url 'employee_detail' employee.employee_code %}">
+                    <li class="employee-item">
+                        <a class="employee-link" href="{% url 'employee_detail' employee.employee_code %}">
                             {{ employee.user.first_name }} {{ employee.user.last_name }}
                         </a>
                     </li>
@@ -155,16 +161,18 @@ ul li img {
         <!-- Bài viết -->
         {% if results.posts %}
             <h2>Bài viết</h2>
-            <ul>
+            <ul class="posts-list">
                 {% for post in results.posts %}
-                    <li>
-                        <p> {{ post.user.first_name }} {{ post.user.last_name }}</p>
-                        <p>{{ post.created_at }} </p>
-                        <a href="{% url 'post_detail' post.pk %}">
+                    <li class="post-item">
+                        <p class="post-author">
+                            {{ post.user.first_name }} {{ post.user.last_name }}-
+                        </p>
+
+                        <a class="post-link" href="{% url 'post_detail' post.pk %}">
                             {{ post.content|truncatechars:50 }}
                         </a>
                         {% if post.image %}
-                            <img src="{{ post.image.url }}" alt="Post image" style="width: 100px; height: auto;">
+                            <img class="post-image" src="{{ post.image.url }}" alt="Post image">
                         {% endif %}
                     </li>
                 {% empty %}
@@ -173,8 +181,9 @@ ul li img {
             </ul>
         {% endif %}
     {% else %}
-        <p>Không tìm thấy kết quả nào phù hợp.</p>
+    <div class="none">
+        <em><p>Không tìm thấy kết quả nào phù hợp.</p></em>
+        </div>
     {% endif %}
 </div>
 {% endblock %}
-

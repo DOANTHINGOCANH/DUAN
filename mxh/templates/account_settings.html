@@ -2,26 +2,32 @@
 {% block title %}THIẾT LẬP TÀI KHOẢN{% endblock %}
 {% block css %}
     .alert-custom {
-    color: #E22B2B;
+    color: #d42828;
     text-align: center;
-}
-.alert-container {
+    }
+    .alert-container {
     padding: 15px;
-}
+    margin-bottom: 0px;
+    }
     .account-update {
     background-color: white !important;
     padding: 0px 0px 20px 0px;
     margin: 0 auto;
     margin-bottom: 40px;
     margin-top: 20px;
-    max-width: 95%;
-}
+    max-width: 60%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    }
     .account-update h2 {
-        margin-bottom: 30px;
-        background-color: #E22B2B;
-        color: white;
-        padding: 5px;
-        width: 100%;
+    margin-bottom: 5px;
+    color: black;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+
     }
     .account-update .form-group {
         margin-bottom: 25px;
@@ -51,14 +57,15 @@
     justify-content: flex-end;
     margin-top: 20px;
     margin-right: 50px;
-}
+    }
     .account-update button.btn-primary {
-        background-color: #E22B2B;
+        background-color: #d42828;
         color: white;
         border: none;
         padding: 5px 10px;
         font-size: 14px;
-        margin-top: 10px
+        margin-top: 10px;
+        border-radius: 5px;
     }
 {% endblock %}
 {% block content %}
@@ -79,19 +86,19 @@
                 {% csrf_token %}
                 <input type="hidden" name="update_profile" value="true">
                 <div class="form-group">
-                    <label for="first_name" class="text-dark"><strong>Họ:</strong></label>
+                    <label for="first_name" class="text-dark">Họ:</label>
                     <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}" required>
                 </div>
                 <div class="form-group">
-                    <label for="last_name" class="text-dark"><strong>Tên:</strong></label>
+                    <label for="last_name" class="text-dark">Tên:</label>
                     <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}" required>
                 </div>
                 <div class="form-group">
-                    <label for="email" class="text-dark"><strong>Email:</strong></label>
+                    <label for="email" class="text-dark">Email:</label>
                     <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
                 </div>
                 <div class="buttom">
-                <button type="submit" class="btn btn-primary"><strong>Cập nhật</strong></button>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
                 </div>
             </form>
         </div>
@@ -102,19 +109,19 @@
                 {% csrf_token %}
                 <input type="hidden" name="update_password" value="true">
                 <div class="form-group">
-                    <label for="old_password" class="text-dark"><strong>Mật khẩu cũ:</strong></label>
+                    <label for="old_password" class="text-dark">Mật khẩu cũ:</label>
                     <input type="password" class="form-control" id="old_password" name="old_password">
                 </div>
                 <div class="form-group">
-                    <label for="new_password" class="text-dark"><strong>Mật khẩu mới:</strong></label>
+                    <label for="new_password" class="text-dark">Mật khẩu mới:</label>
                     <input type="password" class="form-control" id="new_password" name="new_password">
                 </div>
                 <div class="form-group">
-                    <label for="confirm_password" class="text-dark"><strong>Xác nhận mật khẩu:</strong></label>
+                    <label for="confirm_password" class="text-dark">Xác nhận mật khẩu:</label>
                     <input type="password" class="form-control" id="confirm_password" name="confirm_password">
                 </div>
                 <div class="buttom">
-                    <button type="submit" class="btn btn-primary"><strong>Đổi mật khẩu</strong></button>
+                    <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
                 </div>
             </form>
         </div>

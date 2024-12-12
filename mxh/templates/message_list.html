@@ -6,22 +6,23 @@
     .search_search {
         display: flex;
         align-items: center;
-        background-color: #101111;
+        background-color: #fff;
         border-radius: 20px;
         padding: 5px 15px;
         width: 100%;
         max-width: 325px;
         transition: all 0.3s ease;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
         margin-top: 20px;
+        border: 1px solid #ccc;
     }
 
     .search_search:hover {
-        background-color: #101111;
+        background-color: #fff;
     }
 
     .search-icon {
-        color: #E22B2B;
+        color: #d42828;
         margin-right: 10px;
         transition: color 0.3s ease;
     }
@@ -31,24 +32,25 @@
     }
 
     #search-input {
-        border: none;
-        outline: none;
-        flex: 1;
-        font-size: 16px;
-        color: #fff;
-        padding: 5px 0;
-        background-color: #101111;
-    }
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 16px;
+    color: #000;
+    padding: 5px 0;
+    background-color: #fff;
+}
 
     #search-input::placeholder {
         color: #bbb;
         font-style: italic;
-        background-color: #101111;
+        background-color: #fff;
     }
 
-    #search-input:focus::placeholder {
-        background-color: #101111;
-    }
+    #search-input:focus {
+    color: #000;
+    cursor: text;
+}
 
         #search-results {
             list-style-type: none;
@@ -56,7 +58,7 @@
             margin: 0;
             max-height: 200px;
             overflow-y: auto;
-            background-color: transparent;
+            background-color: #fff;
             width: 26%;
             z-index: 10;
             margin-bottom:20px;
@@ -70,7 +72,7 @@
         }
 
         #search-results::-webkit-scrollbar-thumb {
-          background: dimgrey;
+          background: #bbb;
         }
 
         #search-results li {
@@ -81,12 +83,9 @@
             border-radius: 10px;
         }
 
-
-
-        /* Danh sách cuộc trò chuyện gần đây */
         h2 {
             font-size: 34px;
-            color: #fff;
+            color: #000;
 
         }
 
@@ -96,14 +95,16 @@
             margin: 0;
         }
 
-        li {
+        .m {
             padding: 15px;
             border-bottom: 1px solid #ddd;
             font-size: 16px;
             background-color: #f9f9f9;
-            border-radius: 5px;
+            border-radius: 5px ;
+            border: 1px solid #ccc;
             margin-bottom: 10px;
-            width: 97%;
+            width: 70%;
+
         }
 
         li a {
@@ -112,7 +113,7 @@
         }
 
         li a:hover {
-            color: #E22B2B;
+            color: #d42828;
         }
 
         .convo-info {
@@ -126,24 +127,24 @@
         }
 
         .convo-info .time {
-            color: #888;
+            color: #bbb;
             margin-top: 10px;
         }
-    .chat{ margin-left: 30px;
-    margin-top:10px;}
-    .mess{font-size: 16px;
-    margin-top:5px;
-    margin-bottom:-10px;}
-    #search-results li a {
-                color: white;
-            }
-    #search-results li:hover {
-                background-color: dimgrey;
-            }
-    #search-results li a:hover {
-                color: #E22B2B;
-            }
-    /* Nút tạo nhóm */
+        .chat{ margin-left: 30px;
+        margin-top:10px;}
+        .mess{font-size: 16px;
+        margin-top:5px;
+        margin-bottom:-10px;}
+        #search-results li a {
+                    color: #000;
+                }
+        #search-results li:hover {
+                    background-color: #fff;
+                }
+        #search-results li a:hover {
+                    color: #d42828;
+                }
+
         .create-group-button {
             color: white;
             padding: 8px 8px;
@@ -154,7 +155,7 @@
             margin: 0 auto 10px;
             text-decoration: none;
             margin-left: 20px;
-            background-color: #E22B2B;
+            background-color: #d42828;
             font-size: 16px;
         }
 
@@ -163,16 +164,18 @@
             color: #E22B2B;
         }
 
-    form {
-        width: 323px;
-    }
-    .container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        width: 800px;
-    }
+        form {
+            width: 323px;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            width: 800px;
+        }
+        .mess{ color: #bbb;
+        margin-top: 10px;}
 {% endblock %}
 
 {% block content %}
@@ -200,40 +203,44 @@
     {% for convo in conversations %}
         {% if convo.type == 'personal' and convo.user and convo.user.id %}
     <li>
+        <div class="m">
                <a href="{% url 'user_chat' convo.user.id %}">
-                   <strong>{{ user.first_name }} {{ user.last_name }}</strong><br>
+                   <strong>{{ convo.user.first_name }} {{ convo.user.last_name }}</strong><br>
                    <div class="mess">
-                       <em>
+
                            {% if convo.last_message %}
                                {{ convo.sender.first_name }} {{ convo.sender.last_name }}: {{ convo.last_message }}
                            {% else %}
                                {{ convo.sender.first_name }} {{ convo.sender.last_name }}: Đã gửi một tệp đính kèm
                            {% endif %}
 
-                </em><br>
+                <br>
                    </div>
                 <div class="convo-info">
-                    <span class="time">{{ convo.time }}</span>
+                    <span class="time">{{ convo.time_display }}</span>
                 </div>
             </a>
+            </div>
             </li>
         {% elif convo.type != 'personal' and convo.group and convo.group.id %}
             <li>
+                <div class="m">
                 <a href="{% url 'group_chat' convo.group.id %}">
                     <strong>{{ convo.group.name }}</strong><br>
                     <div class="mess">
-                        <em>
+
                             {% if convo.last_message %}
                                 {{ convo.sender.first_name }} {{ convo.sender.last_name }}: {{ convo.last_message }}
                             {% else %}
                                 {{ convo.sender.first_name }} {{ convo.sender.last_name }}: Đã gửi một tệp đính kèm
                             {% endif %}
-                        </em><br>
+                        <br>
                     </div>
                     <div class="convo-info">
-                        <span class="time">{{ convo.time }}</span>
+                        <span class="time">{{ convo.time_display }}</span>
                     </div>
                 </a>
+                </div>
             </li>
         {% endif %}
     {% endfor %}

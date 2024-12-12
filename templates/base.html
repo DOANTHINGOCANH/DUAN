@@ -2,58 +2,59 @@
 {% load static %}
 <html lang="vi">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-   <title>{% block title %}Trang Web{% endblock %}</title>
-   <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+   <link rel="icon" href="{% static 'mxh/logo-mingle.png' %}" type="image/png">
+  <title>{% block title %}Trang Web{% endblock %}</title>
+  <style>
        * {
            margin: 0;
            padding: 0;
            box-sizing: border-box;
-           font-family: system-ui, -apple-system, sans-serif;
-
+           font-family: Montserrat, sans-serif;
        }
-
-
        body {
-           display: flex;
-           min-height: 100vh;
-       }
-
-        .wrapper {
-           display: flex;
-           flex-direction: column;
-           min-height: 100vh;
-       }
-
-
-       .content-wrapper {
-           display: flex;
-           flex-grow: 1;
-       }
-
-
+          display: flex;
+          min-height: 100vh;
+      }
+       .wrapper {
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+      }
+      .content-wrapper {
+          display: flex;
+          flex-grow: 1;
+      }
 
        .sidebar {
-       position: fixed;
-       top: 60px; /* Bằng với chiều cao của header */
-       left: 0;  /*siderbar ở bên trái*/
-       width: 200px; /* Chiều rộng của sidebar */
-       height: calc(100vh - 60px); /* Chiều cao còn lại của màn hình trừ đi chiều cao header */
-       background-color: #E22B2B;
-       overflow-y: auto; /* Đảm bảo có thể cuộn nếu nội dung quá dài */
-       font-weight: bold;
-       font-size: 18px;
-       justify-content: space-between;
-       align-items:center
-       display: flex;
-       flex-direction: column;
-       }
+           position: fixed;
+           top: 60px;
+           left: 0;
+           width: 200px;
+           height: calc(100vh - 60px);
+           background-color: #d42828;
+           overflow-y: auto;
+           font-weight: bold;
+           font-size: 18px;
+           justify-content: space-between;
+           align-items:center
+           display: flex;
+           flex-direction: column;
+           }
+
+       .main-content {
+           margin-left: 200px;
+           flex-grow: 1;
+           background-color: #ffefef;
+           padding: 80px 20px;
+           min-height: calc(100vh - 60px);
+           }
 
        .header {
            position: fixed;
-           background-color: black;
+           background-color: #FFEFEF;
            top: 0;
            left: 0;
            height: 60px;
@@ -62,107 +63,97 @@
            display: flex;
            padding: 0 20px;
            align-items: center;
+           border-bottom: 2px solid #d42828 ;
            justify-content: space-between;
-           border-bottom: 1px solid white ;
        }
 
-        .main-content {
-       flex-grow: 1; /* Nội dung chính chiếm hết không gian còn lại */
-       background-color: #000; /* Màu nền đen */
-       color: white; /* Màu chữ trắng */
-       padding: 20px; /* Tạo khoảng cách bên trong */
-       padding-top: 80px; /* Thêm padding-top để tránh bị che bởi header */
-       margin-left: 200px; /* Khoảng cách bằng với chiều rộng của sidebar */
-       min-height: calc(100vh - 60px); /* Chiều cao tối thiểu trừ đi header */
-       }
        .logo img {
-       height: 120px; /* Điều chỉnh kích thước logo */
-       width: auto;
-       margin-right: 300px; /* Khoảng cách giữa logo và các thành phần khác */
+          height: 55px;
+          width: auto;
+          padding-top: 5px;
+          margin-left: 100%;
+      }
+       a {
+          text-decoration: none;
+          font-size: 18px;
        }
+
        .nav-item {
            display: flex;
-           align-item: center;
+           align-items: center;
            padding: 1.95rem;
            color: white;
-           text-decoration: none;
-           font-size: 1.2rem;
            transition: background-color 0.1s ease;
        }
-
-
        .nav-item-header {
            display: flex;
-           align-item: center;
-           color: white;
+           align-items: center;
+           text-align: right;
+           color: #d42828;
            padding: 0;
-           text-decoration: none;
            font-size: 1rem;
            transition: color 0.1s ease;
        }
-
-
        .nav-item-header:hover {
-           color: rgba(226, 43, 43, 1);
+           color: black;
        }
        .nav-item:hover {
            background-color: black;
        }
 
-
        .nav-item svg {
            width: 28px;
            height: 28px;
            margin-right: 0.75rem;
+           flex-shrink: 1;
        }
-
 
        .search-container {
-           display: flex;
-           align-items: center; /* Căn giữa theo chiều dọc */
-           background: white;
-           border-radius: 20px;
-           padding: 0.3rem 0.8rem;
-           width: 300px;
-           height:30px;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 25px;
+            width: 20%;
+            border: 1px solid #ccc;
+            position: fixed;
+            margin: 50%;
+
        }
 
-
-       .search-container {
-    display: flex;
-    align-items: center;
-    background-color: white;
-    border-radius: 20px;
-    padding: 5px 10px;
-    width: 250px;
-}
-
-.search-container input {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    flex-grow: 1;
-    width: 70px;
-}
-
-.search-icon {
-    font-size: 20px;
-    color: #E22B2B;
-    margin-right: 10px;
-}
-       .user-controls {
-           display: flex;
-           align-items: center;
-           gap: 1rem;
-           color: white;
+       .search-container input {
+            border: none;
+            outline: none;
+            padding: 8px 10px;
+            font-size: 14px;
+            width: 50%;
+            font-style: italic;
        }
 
+        .search-container .search-icon {
+            margin-left: 10px;
+            fill: #d42828;
+            width: 24px;
+            height: 24px;
+            padding-top: 8px;
+        }
 
+      .name {
+            position: fixed;
+            margin: 14%;
 
-       {% block css %}{% endblock %}
+        }
+
+      .name a {
+           color: #d42828;
+           display: inline-block;
+           font-size: 22px;
+      }
+      .name a:hover {
+           color: black;
+      }
+      {% block css %}{% endblock %}
+
    </style>
-
 </head>
 <body>
    <nav class="sidebar">
@@ -198,45 +189,39 @@
            Hồ sơ nhân viên
        </a>
    </nav>
-   <main class="main-content">
-       <header class="header">
-           <div class="logo">
-               <img src="{% static 'mxh/logo.png' %}" />
-           </div>
-           <div class="search-container">
-            <form action="{% url 'search' %}" method="get">
-                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                </svg>
-                <input type="text" name="q" placeholder="Tìm kiếm">
-                <button type="submit" style="display:none;">Tìm</button>
-            </form>
-        </div>
-           <div class="user-controls">
-               {% if request.user.is_authenticated %}
-                   <a href="{% url 'account_settings' %}" style="color: white; text-decoration: none;">
-                       <span><strong>{{ request.user.first_name }} {{ request.user.last_name }}</strong></span>
-                   </a>
-               {% else %}
-                   <a href="{% url 'login' %}" style="color: white; text-decoration: none;">
-                       <span>Đăng nhập</span>
-                   </a>
-               {% endif %}
+   <div class="header">
+       <div class="logo">
+           <img src="{% static 'mxh/logo-mingle.png' %}" />
+       </div>
+       <div class="name">
+           <a href="{% url 'account_settings' %}">
+               <span><strong>{{ request.user.first_name }} {{ request.user.last_name }}</strong></span>
+           </a>
+       </div>
+       <div class="search-container">
+           <form action="{% url 'search' %}" method="get">
+           <svg viewBox="0 0 20 20" fill="currentColor" class="search-icon">
+               <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+           </svg>
 
-           </div>
-           <div class="logo-container">
-            <a href="{% url 'logout' %}" class="nav-item-header">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
-                </svg>
-                <div class="text"><strong>Đăng xuất</strong></div>
-            </a>
-        </div>
-       </header>
-       {% block content %}
-       {% endblock %}
+           <input type="text" name="q" placeholder="Tìm kiếm...">
+
+           </form>
+       </div>
+
+       <div class="logout-container">
+           <a href="{% url 'logout' %}" class="nav-item-header">
+               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                   <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+               </svg>
+               <div class="text"><strong>Đăng xuất</strong></div>
+           </a>
+       </div>
+   </div>
+   <main class="main-content">
+       {% block content %} {% endblock %}
+
    </main>
 </body>
+{% block footer %} {% endblock %}
 </html>
-
-
